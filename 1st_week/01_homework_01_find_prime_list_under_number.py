@@ -49,15 +49,21 @@ def find_prime_list_under_number(number):
     # 2~number 까지 찾아서 이것들이 소수이면 prime_list 넣는다.
     for n in range(2, number + 1): # 2 ~ n 까지의 숫자들이 n에 들어가는 것을 반복한다
         # 이것들이 소수인가?
-        for i in prime_list: # 2부터 n-1 까지 i 에 들어가는 것을 반복 (1과 자기 자신 제외)
+        for i in prime_list: # 소수로만 검사
             if i * i <= n and n % i == 0: # i * i <= n 이라는 소수의 개념 + 나누어 떨어지면 소수가 아니다
-                break
+                break # 소수가 아니다
         else:
             prime_list.append(n)
     return prime_list
 
 result = find_prime_list_under_number(input)
 print(result)
+
+# 소수 문제 풀이의 핵심 개념 정리
+# 어떤 수 n이 소수가 아니라면, 반드시 더 작은 소수의 곱으로 표현됨(=그 소수로 나눠진다)
+# 1. 즉 어떤 수가 소수인지 판별하려면 소수로만 검사하면 된다.
+# 2. 나눠보는 소수는 i * i <= n 까지만 검사하면 된다
+# 왜냐면 n 이 합성수라면 그 약수 중 하나는 반드시 n의 제곱근 이하이기 때문
 
 # 파이썬의 문법 for-else
 # for x in [1,2,3,4]:

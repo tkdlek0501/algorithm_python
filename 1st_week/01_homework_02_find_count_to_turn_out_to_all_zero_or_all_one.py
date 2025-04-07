@@ -17,12 +17,13 @@ input = "011110"
 # 아이디어
 # 언제 0에서 1로 변하는지 1에서 0으로 변하는지가 뒤집는 타이밍이다.
 # 0에서 1로 변할 때 뒤집을지(전체를 0으로), 1에서 0으로 변할 때 뒤집을지(전체를 1로)
+# 0을 1로 뒤집는 횟수 vs 1을 0으로 뒤집는 횟수
 
 def find_count_to_turn_out_to_all_zero_or_all_one(string):
     count_to_all_zero = 0
     count_to_all_one = 0
 
-    # 맨 첫번째 숫자부터 뒤집는다고 하면
+    # 맨 첫번째 숫자는 무조건 뒤집는 것으로 생각
     if string[0] == '0':
         count_to_all_one += 1
     elif string[0] == '1':
