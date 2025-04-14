@@ -27,26 +27,52 @@ class LinkedList:
             cur = cur.next
         cur.next = Node(value)
 
+    # def get_kth_node_from_last(self, k):
+    #     # 총길이 구하기
+    #     total_size = 1
+    #     cur = self.head
+    #     while cur.next is not None:
+    #         total_size += 1
+    #         cur = cur.next
+    #     # 길이값 계산
+    #     # 총자리가 4자리라면 뒤에서 2번째는 앞에서 3번째
+    #     # 인덱스로 계산하면 4 - 2 번째 인덱스
+    #     search_index = total_size - k
+    #
+    #     # getNode
+    #     cur_index = 0
+    #     cur = self.head
+    #     while cur_index != search_index:
+    #         cur = cur.next
+    #         cur_index += 1
+    #
+    #     return cur
+
+# 또 다른 방법
+# 우리는 끝에서 k번 째인 노드의 값을 알고 싶은 거다
+# 즉 2개의 slow, fast 라는 탐색을 사용해서 한 번의 순환 안에 찾을 수 있다
+# 예시(k=2)
+# head
+# slow         fast
+#       slow           fast
+#              slow           fast
+#                     slow            fast
+# [6] -> [7] -> [8] -> [9] -> [10] -> [11]
+# 위 처럼 fast 가 끝에 다달았을 때 우리가 알고 싶은 값은 slow에 위치하게 된다
     def get_kth_node_from_last(self, k):
-        # 총길이 구하기
-        total_size = 1
-        cur = self.head
-        while cur.next is not None:
-            total_size += 1
-            cur = cur.next
-        # 길이값 계산
-        # 총자리가 4자리라면 뒤에서 2번째는 앞에서 3번째
-        # 인덱스로 계산하면 4 - 2 번째 인덱스
-        search_index = total_size - k
+        slow = self.head
+        fast = self.head
 
-        # getNode
-        cur_index = 0
-        cur = self.head
-        while cur_index != search_index:
-            cur = cur.next
-            cur_index += 1
+        for i in range(k):
+            fast = fast.next
 
-        return cur
+        while fast is not None:
+            slow = slow.next
+            fast = fast.next
+
+        return slow
+# 하지만 2N에서 N으로 줄였다고 해도 O(N) 만큼의 시간복잡도를 가지는 것은 동일하므로
+# 시간복잡도가 크게 차이나지는 않는다
 
 
 linked_list = LinkedList(6)

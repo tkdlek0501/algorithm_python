@@ -11,7 +11,7 @@ finding_numbers = [0, 3, 5, 6, 1, 2, 4]
 # 2. 이를 순차적으로 만드는 작업을 먼저 해야 한다?
 
 def is_exist_target_number_binary(target, array):
-    array.sort(array,)
+    array.sort()
 
     current_index = (len(array) - 1) // 2
     left_index = 0
