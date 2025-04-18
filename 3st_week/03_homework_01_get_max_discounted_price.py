@@ -29,24 +29,42 @@ shop_prices = [30000, 2000, 1500000]
 user_coupons = [20, 40]
 
 # 내 풀이
+# def get_max_discounted_price(prices, coupons):
+#     prices.sort(reverse=True)
+#     coupons.sort(reverse=True)
+#
+#     coupons_last_index = len(coupons) - 1
+#
+#     sum = 0
+#
+#     for i in range(len(prices)):
+#         if coupons_last_index < i:
+#             for j in range(i, len(prices)): # 이중 for 문 아님!
+#                 sum += prices[j]
+#             return sum
+#         # print("price : ", prices[i], "coupon : ", coupons[i])
+#         sum += (prices[i] - (prices[i] * coupons[i]//100))
+#
+#     return sum
+
 def get_max_discounted_price(prices, coupons):
     prices.sort(reverse=True)
     coupons.sort(reverse=True)
 
-    coupons_last_index = len(coupons) - 1
+    prices_index = 0
+    coupons_index = 0
+    max_discounted_price = 0
+    while prices_index < len(prices) and coupons_index < len(coupons): # 현재 가격과 쿠폰이 모두 배열 내 존재하는 원소일 때
+        discounted_price = prices[prices_index] * (100 - coupons[coupons_index]) / 100 # 할인율이 적용된 금액
+        max_discounted_price += discounted_price
+        prices_index += 1
+        coupons_index += 1
 
-    sum = 0
+    while prices_index < len(prices): # 쿠폰 적용 없이 남은 상품에 대해 원가로 적용
+        max_discounted_price += prices[prices_index]
+        prices_index += 1
 
-    for i in range(len(prices)):
-        if coupons_last_index < i:
-            for j in range(i, len(prices)): # 이중 for 문 아님!
-                sum += prices[j]
-            return sum
-        # print("price : ", prices[i], "coupon : ", coupons[i])
-        sum += (prices[i] - (prices[i] * coupons[i]//100))
-
-    return sum
-
+    return max_discounted_price
 
 print("정답 = 926000 / 현재 풀이 값 = ", get_max_discounted_price([30000, 2000, 1500000], [20, 40]))
 print("정답 = 485000 / 현재 풀이 값 = ", get_max_discounted_price([50000, 1500000], [10, 70, 30, 20]))
