@@ -2,7 +2,12 @@
 # 문제 설명
 # 로봇 청소기가 주어졌을 때, 청소하는 영역의 개수를 구하는 프로그램을 작성하시오.
 #
-# 로봇 청소기가 있는 장소는 N×M 크기의 직사각형으로 나타낼 수 있으며, 1×1크기의 정사각형 칸으로 나누어져 있다. 각각의 칸은 벽 또는 빈 칸이다. 청소기는 바라보는 방향이 있으며, 이 방향은 동, 서, 남, 북중 하나이다. 지도의 각 칸은 (r, c)로 나타낼 수 있고, r은 북쪽으로부터 떨어진 칸의 개수, c는 서쪽으로 부터 떨어진 칸의 개수이다.
+# 로봇 청소기가 있는 장소는 N×M 크기의 직사각형으로 나타낼 수 있으며,
+# 1×1크기의 정사각형 칸으로 나누어져 있다.
+# 각각의 칸은 벽 또는 빈 칸이다.
+# 청소기는 바라보는 방향이 있으며, 이 방향은 동, 서, 남, 북중 하나이다.
+# 지도의 각 칸은 (r, c)로 나타낼 수 있고,
+# r은 북쪽으로부터 떨어진 칸의 개수, c는 서쪽으로 부터 떨어진 칸의 개수이다.
 #
 # 로봇 청소기는 다음과 같이 작동한다.
 #
@@ -22,6 +27,32 @@
 #
 # 로봇 청소기가 있는 칸의 상태는 항상 빈 칸이라고 했을 때,
 # 로봇 청소기가 청소하는 칸의 개수를 반환하시오.
+from collections import deque
+
+
+# 문제 분석
+# 모두 탐색해야 한다 -> 모든 경우의 수 => BFS or DFS 사용해야 한다
+# 방향 개념이 나온다
+#      북  동  남  서
+dr = [-1, 0, 1, 0] # 상하
+dc = [0, 1, 0, -1] # 좌우
+
+# 자기가 바라보는 방향에서 왼쪽으로 회전하므로
+#       북(0)
+#     서(3) 동(1)
+#       남(2)
+# 0 -> 3 -> 2 -> 1 -> 0 로 회전 한다
+# -> 수식) (현재 방향 + 3) % 4
+def get_d_index_when_rotate_to_left(d):
+    return (d + 3) % 4
+
+# 후진) 바라보는 방향을 유지하고 한 칸 후진할 때 방향
+# 0 -> 2 (북 -> 남)
+# 2 -> 0
+# 3 -> 1
+# 1 -> 3
+def get_d_index_when_go_back(d):
+    return (d + 2) % 4
 
 current_r, current_c, current_d = 7, 4, 0
 current_room_map = [
@@ -38,8 +69,48 @@ current_room_map = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 ]
 
-
+# 2차원 배열이 나오면 무조건 행(n)/ 열(m)의 개수를 구한다
 def get_count_of_departments_cleaned_by_robot_vacuum(r, c, d, room_map):
+    n = len(room_map) # 행의 길이
+    m = len(room_map[0]) # 열의 길이
+    count_of_departments_cleaned = 1 # 1번 동작이 현재 위치 청소이고, 로봇 청소기의 위치는 항상 빈 칸이므로
+    room_map[r][c] = 2
+
+    # BFS
+    # 1. 루트 노드를 큐에 넣고
+    # 2. 현재 큐(FIFO)의 노드를 빼서 visited에 추가
+    # 3. 현재 방문한 노드와 인접한 노드 중 방문하지 않은 노드를 큐에 추가
+    # 4. 2 부터 반복
+    # 5. 큐가 빌 때 까지 반복
+
+    queue = deque([ # BFS 를 구현하기 위해
+        [r, c, d] # BFS 의 응용: 현재 기준에서 필요한 데이터를 모두 담는다
+    ])
+
+    while queue:
+        r, c, d = queue.popleft() # 현재 방문한 노드는 뺀다
+        temp_d = d
+
+        # 현재 방문한 장소 기준으로 왼쪽 방향부터 차례대로 탐색함
+        for i in range(4):
+            temp_d = get_d_index_when_rotate_to_left(temp_d)
+            new_r, new_c = r + dr[temp_d], c + dc[temp_d] # 왼쪽 방향으로 이동
+            # 왼쪽 방향이 아직 청소하지 않은 공간인지 확인 후 전진 가능
+            if 0 <= new_r < n and 0 <= new_c < m and room_map[new_r][new_c] == 0:
+                count_of_departments_cleaned += 1
+                room_map[new_r][new_c] = 2 # 0은 청소 하지 않은칸, 1은 벽 + 커스텀하게 2는 청소한 칸으로 정의, 방문한 값을 2로 관리
+                queue.append([new_r, new_c, temp_d]) # 다음 탐색 기준 위치를 넣어준다
+                break
+            # 네 방향 모두 청소가 이미 되어있거나 벽인 경우는 바라보는 방향을 유지한 채로 한 칸 후진을 하고 2번으로 돌아간다
+            elif i == 3: # break 안됐으면 방향이 3까지 도달한 것이므로
+                temp_d = get_d_index_when_go_back(d)
+                new_r, new_c = r + dr[temp_d], c + dc[temp_d]
+                queue.append([new_r, new_c, d])
+
+                # 뒤쪽 방향이 벽이라 후진도 할 수 없으면 작동을 멈춘다
+                if room_map[new_r][new_c] == 1:
+                    return count_of_departments_cleaned
+
     return
 
 

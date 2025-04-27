@@ -27,10 +27,13 @@ supply_recover_k = 30
 # dates[i] 에는 i번째 공급 가능일이 들어있고, supplies[i] 에는 그 날짜에 공급 가능한 밀가루 수량이 들어있다
 
 # 아이디어
-# 적은 횟수로 많은 공급을 가져오는 게 목적이므로 heap 을 쓴다
-# k일 - 현재 있는 개수 (stock) = 처음 버틸 수 있는 기간 -> 굳이 따로 관리할 필요는 없는 것 같음 공급 받을 수 있는 날짜가 될 때 마다 체크 필요?
-# k일 까지 버티면서 반복문
-# 하루에 1 씩 현재 재고 감소 -> 현재 재고를 다뤄야 한다
+# 하루에 밀가루 1 씩 소비
+# k일 까지 버텨야 함
+# 최소한의 공급 횟수로 밀가루가 떨어지지 않게 해야함
+# -> 공급을 한 번 할 때 어떤 날짜든 가능한 범위 내에서 한 번에 최대한 많이 가져와야 한다
+# 지속적으로 리소스를 소모하면서, 필요할 때 공급해야 하는데, 그 공급 횟수를 최소화 해야하는 문제 패턴
+# 매 순간 최적의 선택을 반복 -> 그리디
+# 여러 선택지 중 가장 큰 값을 뽑아야 한다 -> 우선순위 큐 (힙)
 
 # 문제 풀이
 # 재고가 바닥 나기 전에 가장 많은 공급향을 최소한의 횟수로 가져오는 게 목적이다
@@ -48,7 +51,7 @@ def get_minimum_count_of_overseas_supply(stock, dates, supplies, k):
     max_heap = []
     while stock <= k: # stock 이 k보다 크면 멈춘다 (마지막 일까지 버틸 공급향이 충분할 때까지)
 
-        # 현재 재고보다 낮은 일자 들에 대해서 (높은 일자는 도달하기 전에 재고 바닥 나므로 검사하는 의미가 없다)
+        # 현재 stock일 이전까지 공급 가능한 모든 공급을 max_heap에 추가 (높은 일자는 도달하기 전에 재고 바닥 나므로 검사하는 의미가 없다)
         while last_added_date_index < len(dates) and dates[last_added_date_index] <= stock:
             heapq.heappush(max_heap, supplies[last_added_date_index] * -1) # min_heap을 max_heap 처럼 쓰기 위해 * -1 처리
             last_added_date_index += 1
