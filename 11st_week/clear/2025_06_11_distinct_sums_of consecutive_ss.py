@@ -29,3 +29,16 @@ def solution(elements):
             sum_set.add(sum(extends[k:k + n]))
 
     return len(sum_set)
+
+
+def solution1(elements):
+    ways = set()
+    elements_copy = elements * 2
+
+    for i in range(0, len(elements)):  # i번째 부터
+        hap = 0
+        for j in range(0, len(elements)):  # j개의 합
+            hap += elements_copy[i + j]
+            ways.add(hap)
+
+    return len(ways)

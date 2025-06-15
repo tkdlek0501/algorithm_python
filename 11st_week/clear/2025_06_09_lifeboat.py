@@ -49,12 +49,6 @@
 #
 #     return min_count
 
-# <피드백>
-# 제한이 1명이상 50,000 이하라서 permutations 못 씀
-# 탐색으로 풀 수 없는 문제
-# 짝을 짓는 문제이고 제한 범위가 넓다면
-# -> 정렬 + greedy + 투포인터 사용
-
 def solution(people, limit):
     people.sort()  # 정렬
     left = 0  # 가벼운 사람
@@ -69,3 +63,10 @@ def solution(people, limit):
         boats += 1
 
     return boats
+
+# <피드백>
+# 제한이 1명이상 50,000 이하라서 permutations 못 씀
+# 탐색으로 풀 수 없는 문제
+# 짝을 짓는 문제이고 제한 범위가 넓다면
+# -> 정렬 + greedy + 투포인터 사용
+# left, right

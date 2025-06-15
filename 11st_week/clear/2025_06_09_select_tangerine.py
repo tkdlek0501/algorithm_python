@@ -60,3 +60,7 @@ def solution(k, tangerine):
         if total >= k:  # k개 채우면 멈춤
             break
     return answer
+
+# <피드백>
+# sorted(counter.values(), reverse=True) 로
+# Counter의 values를 꺼내서 reverse로 정렬 가능
