@@ -44,3 +44,27 @@ def solution(x, y, n):
 # visited 로 중복연산을 제거해야 시간 초과에 걸리지 않는다
 # BFS 에서 visited 는 웬만하면 필요하다
 
+from collections import deque
+
+
+def my_solution(x, y, n):
+    answer = -1
+
+    queue = deque([(x, 0)])  # 현재 값, count 으로 초기화
+    visited = set()
+
+    while queue:
+        current, count = queue.popleft()
+
+        # 같으면 count 반환
+        if current == y:
+            return count
+
+        visited.add(current)
+
+        # 아직 도달하지 못한 것 + visited에 있는 것만 queue에 넣어주기
+        for next in ([current + n, current * 2, current * 3]):
+            if next <= y and next not in visited:
+                queue.append((next, count + 1))
+
+    return answer
