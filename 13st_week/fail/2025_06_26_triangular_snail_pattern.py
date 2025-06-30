@@ -24,11 +24,12 @@
 # n * (n + 1) // 2
 
 def solution(n):
+    total = n * (n + 1) // 2  # 총 숫자 개수
+    triangle = [[0] * (i + 1) for i in range(n)]
+
     x, y = 0, 0  # 시작 좌표
     num = 1
     direction = 0  # 0: 아래, 1: 오른쪽, 2: 왼쪽 위
-    total = n * (n + 1) // 2  # 총 숫자 개수
-    triangle = [[0] * (i + 1) for i in range(n)]
     directions = [(1, 0), (0, 1), (-1, -1)]
 
     while num <= total:
@@ -38,10 +39,7 @@ def solution(n):
         dx, dy = directions[direction]
         nx, ny = x + dx, y + dy
 
-        # 경계 체크
-        if (0 <= nx < n and
-                0 <= ny <= nx and # 각 행마다 열의 개수가 달라서 y는 x 이내에 있어야 한다 (2행이면 2개, 3행이면 3개, 4행이면 4개...)
-                triangle[nx][ny] == 0):
+        if 0 <= nx < n and 0 <= ny <= nx and triangle[nx][ny] == 0:
             x, y = nx, ny
         else:
             # 방향 전환
@@ -53,6 +51,7 @@ def solution(n):
     result = []
     for row in triangle:
         result.extend(row)
+
     return result
 
 # <피드백>

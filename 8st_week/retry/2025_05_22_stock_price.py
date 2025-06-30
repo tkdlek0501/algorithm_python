@@ -27,41 +27,45 @@
 # 4초 시점의 2는 가격 안떨어짐 -> 1
 # 5초 시점은 마지막이라 -> 0
 
-# <풀이>
-# prices 를 deque 로 만들어 하나씩 뽑으며 보자
+# from collections import deque
+# def solution(prices):
+#     answer = []
+#
+#     prices_queue = deque(prices)
+#     while prices_queue:
+#         current_price = prices_queue.popleft()
+#         time = 0
+#
+#         if len(prices_queue) == 0:
+#             answer.append(0)
+#         else:
+#             for other_price in prices_queue:
+#                 time += 1
+#                 if other_price < current_price:
+#                     answer.append(time)
+#                     break
+#             else:
+#                 answer.append(time)
+#
+#     return answer
 
-from collections import deque
 def solution(prices):
-    answer = []
+    answer = [0] * len(prices)
+    stack = [] # 인덱스 저장
 
-    prices_queue = deque(prices)
-    while prices_queue:
-        current_price = prices_queue.popleft()
-        time = 0
+    for i in range(len(prices)):
+        while stack and prices[i] < prices[stack[-1]]: # stack 에 있고 stack 에 있는 것보다 가격 작으면
+            j = stack.pop() # 스택에 있는 인덱스 꺼내서
+            answer[j] = i - j # 얼마나 버텼는지 저장
+        stack.append(i) # 스택에 인덱스 저장
 
-        if len(prices_queue) == 0:
-            answer.append(0)
-        else:
-            for other_price in prices_queue:
-                time += 1
-                if other_price < current_price:
-                    answer.append(time)
-                    break
-            else:
-                answer.append(time)
+    for j in stack: # 아직 스택에 남아있는 것(끝까지 버틴 것) 처리
+        answer[j] = len(prices) - 1 - j
 
     return answer
 
 # <피드백>
-# 아래와 같이 queue 를 쓰지 않고 풀 수 있다
-
-def solution1(prices):
-    answer = [0] * len(prices)
-    for i in range(len(prices)):
-        for j in range(i+1, len(prices)):
-            if prices[i] <= prices[j]:
-                answer[i] += 1
-            else:
-                answer[i] += 1
-                break
-    return answer
+# 100,000건이고 최악의 경우 O(N^2) 될 수 있다
+# 따라서 queue로 풀었던 방식으로 풀면 시간 초과 가능성이 있다 (프로그래머스 상 통과지만..)
+# stack으로 풀어야 한다
+# 마치 뒷큰수 푸는 것과 비슷함

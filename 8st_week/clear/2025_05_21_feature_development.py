@@ -80,21 +80,27 @@ def solution(progresses, speeds):
 
     return answer
 
-# <피드백>
-# while 문을 사용하면 while문 조건에 사용된 collection 의 변형을 허용하지만
-# for 문을 사용하면 변형할 수 없다
-
-# -((progress - 100) // speed)
-# 이런식으로 - 를 이용해서 -(93 - 100) // 1 = 7 로
-# // 은 내림이라면 - // 를 사용하면 올림이 된다는 것을 이용
-
-# 아래 방법으로 풀어도 되지만 내 풀이도 괜찮다
-
 def solution1(progresses, speeds):
-    Q=[]
+    answer = []
+
+    queue = deque()
     for p, s in zip(progresses, speeds):
-        if len(Q) == 0 or Q[-1][0] < -((p - 100) // s):
-            Q.append([-((p-100)//s),1])
-        else:
-            Q[-1][1]+=1
-    return [q[1] for q in Q]
+        queue.append((p, s))
+
+    while queue:
+        count = 1
+        p, s = queue.popleft()  # 진행도, 속도
+        time = -((p - 100) // s)  # 걸리는 시간
+
+        # 뒤에 있는 작업 중 같이 나갈 수 있는 작업
+        while queue and 100 <= queue[0][0] + (time * queue[0][1]):
+            queue.popleft()
+            count += 1
+
+        answer.append(count)
+
+    return answer
+
+# <피드백>
+# 한꺼번에 queue에서 빠져나야 한다라면 while 문을 2번 써서
+# 그 차례때 같이 나갈 수 있는 것을 처리해주면 된다

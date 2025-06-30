@@ -33,8 +33,11 @@ def solution(numbers):
     return ''.join(str_nums)
 
 # <피드백>
-# ***정렬 문제를 풀 때 반드시 알아야 할 스킬 모르면 아예 못 푼다!
-# from functools import cmp_to_key 로 custom compare 함수를 사용할 수 있다
-# 사용하는 곳에서는 arr.sort(key = cmp_to_key(compare))
-# compare 함수는 위 코드 참고!
-
+# from functools import cmp_to_key 는 기억나고
+# sort(key = cmp_to_key(compare) 도 쓸 줄 아는데
+# 문자열 정렬에서 a + b > b + a: return -1
+# 이렇게 두 문자의 합으로 비교해야 한다는 사실을 잊으면 안된다
+# list(map(str, numbers)) 문법도 기억해두자
+#     if str_nums[0] == '0':
+#         return '0'
+# 이 부분도 예외적인 처리가 필요하다
