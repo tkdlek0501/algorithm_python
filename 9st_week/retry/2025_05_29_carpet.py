@@ -48,37 +48,6 @@
 # 곱하는 두 수는 가장 가까운 값, 즉 차이가 적은 값
 
 def solution(brown, yellow):
-    answer = []
-
-    a = 0  # 가로
-    b = 0  # 세로
-    # a * b = brown + yellow
-
-    # for 문 범위?
-    sum_by = brown + yellow
-    # 곱해서 sum 값을 만들 수 있는 값 찾기
-    possible_comb = []
-    for num in range(1, sum_by + 1):
-        if sum_by % num == 0:
-            possible_comb.append((num, int(sum_by / num)))
-    idx = len(possible_comb) // 2
-    a, b = possible_comb[idx]
-
-    answer.append(a)
-    answer.append(b)
-
-    return answer
-
-# 피드백
-# 입출력 패턴으로 부터 규칙을 얻은 것은 좋으나
-# +2가 된다는 조건도 고려를 충분히 했어야 했음
-# 패턴을 만들 수 있는 모든 조건이 만족하지 못함
-# 테두리는 언제나 한 줄이 되어야 함
-# 즉 yellow 개수는 전체 격자의 크기와 비교 했을 때
-# (가로 - 2) * (세로 - 2) = yellow
-# 위 조건을 만족해야 함
-
-def solution1(brown, yellow):
     total = brown + yellow
 
     for height in range(3, total):  # 최소 세로는 3부터
@@ -88,3 +57,9 @@ def solution1(brown, yellow):
                 continue  # 가로 ≥ 세로 조건
             if (width - 2) * (height - 2) == yellow:
                 return [width, height]
+
+# 피드백
+# 우선 면적을 구하는 공식 가로 * 세로 = 면적 = 타일 개수 이라는 점을 깔고 시작해야 한다
+# for 문을 도는 범위는 최대값은 지정하기 애매하므로 총 타일의 개수, 최솟값은 3으로 해서
+# 세로의 길이를 먼저 만들고 순회하는 게 좋다
+# (width - 2) * (height - 2) == yellow 도 면적의 개념에서 생각하면 바로 나옴

@@ -69,5 +69,25 @@ def solution(numbers, target):
 # 모든 경우의 수를 탐색하는 DFS, BFS 문제에서는 재귀보다 stack 을 이용하여 푸는 게 좋다
 # stack에 다음에 가능한 경우를 계속 넣어주면 답 찾을 수 있다
 
+from collections import deque
+def solution1(numbers, target):  # 사용할 수 있는 숫자 배열, 타겟 넘버
+    answer = 0
 
+    queue = deque()
+    queue.append((numbers[0], 0))
+    queue.append((-numbers[0], 0))
+    while queue:
+        num, idx = queue.popleft()
+        if idx == len(numbers) - 1:
+            if num == target:
+                answer += 1
+        else:
+            queue.append((num + numbers[idx + 1], idx + 1))
+            queue.append((num - numbers[idx + 1], idx + 1))
+
+    return answer
+
+# <피드백>
+# queue 로 풀어도 괜찮으나 초기값을 초기화 할 때
+# queue.append((0, 0)) 으로 시작하는 게 더 좋다
 

@@ -92,8 +92,9 @@ def solution(n, wires):
     return min_diff
 
 # <피드백>
+# 전력망의 정보를 그래프 형태로 관리해야 한다
+
 # 전선 정보중 하나를 없앤 나머지 정보들만 가지고 모든 경우의 수를 체크하면 된다
-# 이 때 순열이 아니므로 permutations 쓸 필요없이
 # wires[:i] + wires[i + 1:] 로 i 번째 제외하는 로직으로 처리 가능하다
 
 # 네트워크는 graph(2차원) 로 표현하면 된다
@@ -101,7 +102,7 @@ def solution(n, wires):
 # graph = [[] for _ in range(n + 1)]
 # [v1] 에는 v2의 값, [v2] 에는 v1 의 값을 넣어 양방향 정보를 관리
 
-# bfs를 써서 구한다
+# bfs를 써서 이미 처리한 노드를 제외하면서 연결된 노드의 수를 구할 수 있다
 # 따라서 queue 와 visited 이용
 # queue 에는 역시 지금 탐색할 곳,
 # visited 는 탐색 다했으면 방문한 곳으로 남기는 용
