@@ -69,8 +69,26 @@ def solution(s): # s는 0, 1 문자열
 
     return [count, zero_count]
 
+
+def solution1(s):
+    zero_count = 0
+    count = 0
+    while s != "1":
+        # 1. s 에서 모든 0 제거, 그 수 count
+        zero_count += s.count('0')  # count 더하고
+        one_count = s.count('1')  # 1의 길이 값
+        # 2. 길이를 2진법으로 표현한 문자열
+        s = bin(one_count)[2:]
+        count += 1
+
+    return [count, zero_count]
+
+
 # <피드백>
 # bin(숫자) 를 통해 10진수의 수를 2진수로 변환 가능
 # 이 때 앞에 "0b" 가 붙어 나오므로 [2:] 를 통해 제거해줘야 숫자만 남길 수 있다
 # s.count('0') 로 문자열 안의 문자 count 도 가능
 # s.replace(a, b) 로 제거도 가능
+
+# replace() 로 문자열에서 문자 제거를 할 수 있다
+# remove() 는 사용할 수 없음

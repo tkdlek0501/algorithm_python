@@ -48,6 +48,13 @@ def solution(topping):
     return answer
 
 # <피드백>
-# for 문 안에서 slicing 쓰면 O(N) * O(N) 이다
-# 따라서 누적 방식으로 left, right 를 나눠서
+# 범위가 1번의 순회만 가능한 정도이므로
+# left, right 를 나눠서 생각해야 한다
 # 한 쪽에서 다른 한쪽으로 넘겨주는 아이디어로 가야한다
+
+# Couter를 써야 right 의 수를 대폭 줄일 수 있다
+# right를 단순히 stack이나 queue로 만들어봤자 set을 써야 하는데 그러면 O(N^2) 된다
+# 거기다 순서가 중요한게 아니라 전체 기준으로 가짓수만 가지고 판별하기 때문에
+# 이런 문제에서 dict 까지 고려하는 사고를 가져야 한다
+
+# del right[t] 로 키를 삭제할 수 있다

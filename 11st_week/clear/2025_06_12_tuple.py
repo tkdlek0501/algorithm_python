@@ -64,6 +64,31 @@
 # 길이가 작은 것 부터 넣어주기
 # 순서가 섞여있을 수 있다
 
+def solution1(s):
+    answer = []
+
+    s = s[2:len(s) - 2]
+    arr = s.split("},{")
+    # print(arr)
+
+    sequence = []
+    for i in range(len(arr)):
+        # print(arr[i])
+        sequence.append((len(arr[i]), i))
+    # print(sequence)
+    sequence.sort()
+
+    for seq in sequence:
+        idx = seq[1]
+        s_arr = arr[idx].split(',')
+        # print(s_arr)
+        for num in s_arr:
+            int_num = int(num)
+            if int_num not in answer:
+                answer.append(int_num)
+
+    return answer
+
 def solution(s):
     # 1. 바깥 중괄호 제거하고, "},{“ 를 기준으로 분리
     s = s[2:-2]
@@ -86,7 +111,10 @@ def solution(s):
     return answer
 
 # <피드백>
-# 정규식을 통해 문자 파싱을 하거나
-# 위 처럼 수작업으로 해야 한다
-
-# sort(key=len) 을 통해 길이 순 정렬을 할 수 있다
+# 정규식이 익숙하지 않으니 문자열을 잘라내며 배열로 일단 만드는 것은 좋음
+# 각 집합을 정수 리스트로 변환하고 sort 해야 된다는 내용을 알지만
+# -> sets = [list(map(int, x.split(','))) for x in arr]
+# list() 로 배열 만들수 있다는 점
+# map(타입, 대상(for문 돌면서)) 으로 int 형으로 변환 가능하다는 점
+# sort(key=len) 으로 길이 기준으로 정렬할 수 있다는 점
+# 모두 알아야 한다

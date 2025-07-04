@@ -28,3 +28,8 @@ def solution(maps):
                 queue.append((ny, nx, count + 1))
 
     return answer
+
+# 피드백
+# dfs, 동서남북이동, visited 관리, 조건절
+# 각각의 체크만 잘하면 된다
+# 튜플 데이터를 넣을 때는 [()] 로 감싸서 넣기 주의하자
