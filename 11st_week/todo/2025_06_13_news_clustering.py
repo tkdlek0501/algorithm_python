@@ -47,6 +47,64 @@
 
 from collections import Counter
 
+def solution1(str1, str2):
+    answer = 0
+
+    # 영문자 처리 +
+    # 두 글자씩 끊어서 다중집합 원소로 만든다
+    # -> 0,1/ 1,2/ ...
+    arr_res1 = []
+    for i in range(len(str1) - 1):
+        if str1[i:i + 2].isalpha():
+            st = str1[i].upper() + str1[i + 1].upper()
+            arr_res1.append(st)
+    arr_res2 = []
+    for i in range(len(str2) - 1):
+        if str2[i:i + 2].isalpha():
+            st = str2[i].upper() + str2[i + 1].upper()
+            arr_res2.append(st)
+    # print(arr_res1)
+    # print(arr_res2)
+
+    # 교집합 -> 겹치면 min()
+    count1 = Counter(arr_res1)
+    count2 = Counter(arr_res2)
+    # print(count1)
+    # print(count2)
+
+    gyo_count = 0
+    gyo_visited = set()
+    for c in count1:
+        if c not in gyo_visited:
+            if count2[c]:  # 겹치는 경우
+                gyo_visited.add(c)
+                gyo_count += min(count1[c], count2[c])  # 작은값
+    # print(gyo_count)
+
+    # 합집합 -> 겹치면 max()
+    hap_count = 0
+    hap_visited = set()
+    for c in count1:
+        if c not in hap_visited:
+            if count2[c]:  # 겹치는 경우
+                hap_visited.add(c)
+                hap_count += max(count1[c], count2[c])  # 큰 값
+            else:  # 안겹치면
+                hap_count += count1[c]
+    for c in count2:  # 남은 count2
+        if c not in hap_visited:
+            hap_count += count2[c]
+
+    # print(gyo_count, hap_count)
+
+    # 공집합 케이스
+    if gyo_count == 0 and hap_count == 0:
+        answer = 1
+    else:
+        answer = gyo_count / hap_count
+    # print(answer)
+
+    return int(answer * 65536)
 
 def solution(str1, str2):
     arr1 = []
@@ -72,9 +130,9 @@ def solution(str1, str2):
 
     return int(inter_count / union_count * 65536)
 
+
 # <피드백>
-# 교집합과 합집합을 구하는 방법은 Couter를 이용해서 구할 수 있다
+# ***교집합과 합집합을 구하는 방법은 Couter를 이용해서 구할 수 있다
 # 교집합은 counter1 & counter2
 # 합집합은 counter1 | counter2
-
-# 이 결과를 sum(inter.values()) 하면 합계를 구할 수 있다
+# ***이 결과를 sum(inter.values()) 하면 합계를 구할 수 있다
