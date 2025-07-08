@@ -18,6 +18,32 @@
 # 십진수를 기반으로 구해야 하는 것
 # 진법 변환이 필요하다
 
+def solution1(n, t, m, p):  # 진법, 미리 구할 숫자 개수, 총인원, 순서
+    answer = ''
+
+    count = t * m  # 미리 구할 숫자 개수
+    res = ""  # 미리 구할 숫자 배열
+
+    def convert1(n, num):
+        if num == 0:
+            return '0'
+        result = ""
+        setting = "0123456789ABCDEF"
+        while num > 0:
+            result = setting[int(num % n)] + result
+            num //= n
+        return result
+
+    idx = 0
+    while len(res) <= count:
+        res += convert(n, idx)
+        idx += 1
+
+    for i in range(t):
+        answer += res[m * i + (p - 1)]
+
+    return answer
+
 def solution(n, t, m, p): # 진법, 미리 구할 숫자의 개수, 게임 인원, 순서
     sequence = ""
     number = 0
@@ -43,6 +69,13 @@ def convert(num, base):
     return result
 
 # <피드백>
+# 진법 변환 함수에서
+# if num == 0: return "0" 부분 있어야 한다
+# 나머지 부분은 숙지함
+
+# 내 순서를 찾는 것도 턴마다 내 인덱스 위치로 찾는 것 숙지함
+
+
 # 진법 변환 함수에 익숙해지자
 # 미리 sequence 를 만들어 놓고 거기서 내 순서의 값만 뽑아오면 되는 구현 문제
 # 내 순서 = 해당 라운드에서 p 번째 = (i * m) + (p - 1)
