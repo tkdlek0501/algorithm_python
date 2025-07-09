@@ -29,6 +29,58 @@
 #  입차가 됐을 때 배열에 넣고 출차 됐을 때 꺼내서 요금 계산
 # 23:59 분까지 출차 안되면 23:59 로 계산
 
+from collections import defaultdict
+
+def solution1(fees, records):  # 주차요금 정수배열, 자동차 입/출차 내역
+    answer = []
+
+    default_time, default_price, unit_time, unit_price = fees
+
+    def convert_time(t):
+        hour, minute = t.split(':')
+        return int(hour) * 60 + int(minute)
+
+    in_records = {}  # 차량번호 : 입차 시각
+    time_records = defaultdict(int)  # 차량번호 : 누적 시간
+    for record in records:
+        time, number, status = record.split()
+        if status == 'IN':
+            in_records[number] = time
+        else:
+            in_time = in_records[number]  # 입차 시간
+            del in_records[number]  # 기록 제거
+            in_t = convert_time(in_time)
+            out_t = convert_time(time)
+            time_records[number] += (out_t - in_t)
+
+    last_t = convert_time("23:59")
+    if in_records:  # 출차 안된 차 있으면
+        for record in in_records:
+            in_t = convert_time(in_records[record])
+            time_records[record] += (last_t - in_t)
+
+    # 요금 계산
+    result_dict = {}
+    for record in time_records:  # 차량번호, 누적시간
+        if time_records[record] <= default_time:  # 기본 시간 이하
+            result_dict[record] = default_price  # 기본 요금만
+        else:
+            exceed_t = (time_records[record] - default_time)  # 초과시간
+            unit = 0
+            if exceed_t % unit_time != 0:
+                unit = (exceed_t // unit_time + 1)  # 올림
+            else:
+                unit = exceed_t // unit_time
+            exceed_price = unit * unit_price  # 초과 금액
+            result_dict[record] = (default_price + exceed_price)
+    # print(result_dict)
+
+    res = sorted(result_dict)
+    for r in res:
+        answer.append(result_dict[r])
+
+    return answer
+
 import math
 from collections import defaultdict
 
@@ -69,16 +121,13 @@ def solution(fees, records):
     return result
 
 # <피드백>
-# 단순 구현 문제이나
-# 관리해야 하는 포인트가 많고
-# 특이 케이스(출차 시간 없을 경우 23:59 로 계산) 가 있어서
-# 시간이 많이 필요한 문제
+# 어떻게 푸는지 알고 막힘 없이 푸는데도 30분 이상 걸리는 구현 문제
 
-# total_times = defaultdict(int)
-# defaultdict의 사용법 숙지
-# dict.pop(key) 로 dict도 pop이 가능하다는 점 알고 있어야 한다
+# 어떤 정보를 어떤 자료구조로 관리할지 파악하고 풀어나가면 된다
+# 예외 처리에 대해서 신경써야 한다
 
-# 또한 문자열 파싱도 생각하지 않고 바로 튀어나올 수 있게 암기해놓자
-# def time_to_minutes(time_str): # 시간 -> 분 변환
-#     h, m = map(int, time_str.split(":"))
-#     return h * 60 + m
+# import math 를 통해
+# math.ceil() 로 올림 처리 가능
+# -(-exceed_t // unit_time)  # -값으로 올림 나눗셈 방식도 가능
+
+# map(int, time_str.split(":")) 처럼 map(자료형, 대상리스트) 문법
