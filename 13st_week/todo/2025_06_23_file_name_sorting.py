@@ -55,3 +55,49 @@ def solution(files):
 # files, key=lamda f: (함수(f), 함수(f))
 # 함수의 결과로 받아온 튜플로 정렬 기준을 만들어 줄 수 있다
 
+# 정규식으로 못풀겠다 하면 아래 방법
+def solution1(files):
+    answer = []
+
+    dict = {}
+    for i in range(len(files)):
+        file = files[i]
+        idx = 0
+        head = ""
+        # head 만들기
+        for ch in file:  # 글자들을 돌면서
+            if ch.isdigit():  # 숫자이면
+                break
+            else:
+                if ch.isalpha():  # 영문자이면
+                    head += ch.upper()
+                else:
+                    head += ch
+                idx += 1
+
+        # number 만들기
+        number = ""
+        max_number = 5
+        for j in range(idx, len(file)):
+            if not file[j].isdigit():
+                break
+            if len(number) >= max_number:
+                break
+            number += file[j]
+
+        dict[i] = (head, int(number))
+
+    sorted_items = sorted(
+        dict.items(),
+        key=lambda item: (item[1][0].lower(), item[1][1], item[0]))
+
+    for s in sorted_items:
+        answer.append(files[s[0]])
+
+    return answer
+
+# <피드백>
+# sorted(dict.items()) # 를 통해 (key, value) 가져올 수 있고
+# key=lamda item: 하면 이게 하나의 (key, value)
+# (item[0] 이 key 이고 item[1]이 value 가 된다)
+# 마지막에 item[0] (key 값 = 기존 인덱스) 을 넣음으로써 안정 정렬 도 해줘야 기존 정렬 유지 케이스까지 만족할 수 있다
