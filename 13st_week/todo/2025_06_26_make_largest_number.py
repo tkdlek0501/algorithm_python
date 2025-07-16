@@ -18,7 +18,7 @@
 def solution(number, k):
     stack = []
     for num in number:
-        while stack and num > stack[-1] and k > 0:
+        while stack and num > stack[-1] and k > 0: # 제거할 수 조건 하에 갱신
             stack.pop()
             k -= 1
         stack.append(num)
@@ -32,6 +32,13 @@ def solution(number, k):
 
 # <피드백>
 # 지금 선택이 다음 선택에 영향을 끼치는 문제인가? -> 아니다 = dp 로 풀 수 없다
+# 뒷큰수와 비슷하게 계속 다음 수와 비교하며 갱신하는 것은 알겠는데
+# append 시점과 후처리 방식이 생각이 안남..
+
+
+
+
+
 
 # 탐욕법 -> 지금 시점의 최선의 선택이 전체의 최선
 # 1924라는 숫자를 봤을 때 범위 상(1,000,000) 한 번의 순회만 가능하므로

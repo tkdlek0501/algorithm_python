@@ -55,9 +55,15 @@ def solution(n):
     return result
 
 # <피드백>
-# 어떤 규칙을 찾거나 하는 문제가 아니라 직접 값을 넣고
-# 일렬로 만들어 결과 도출하는 문제
-# 2차원 배열의 행을 result.extend(row) 를 통해서 펼칠 수 있음
-
-# 좌표에 값을 넣으며 진행하는 거라 일종의 게임맵과 비슷함
-# 삼각형이라는 특이한 점에 대해 단순화, 총 좌표의 개수만 잘 구하면 풀 수 있음
+# 1. 삼각형 만들기
+#     [[0] * (i + 1) for i in range(n)]
+# 2. 방향 구하기
+# 3. total 값 구하기 -> 등차수열
+#     n * (n + 1) // 2
+# 4. 조건
+#     if 0 <= nx < n and 0 <= ny <= nx and tri[nx][ny] == 0
+# 5. 방향전환
+#     direction = (direction + 1) % 3 (다음 방향)
+# 6. 2차원 배열 1차원으로 펼치기
+#     for row in triangle:
+#         result.extend(row)
