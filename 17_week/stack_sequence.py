@@ -31,12 +31,12 @@
 # stack 에 있는 마지막 숫자와 얻으려는 숫자가 같은면 pop
 # 아니면 push
 
-def solution(n, arr): # 정수, 정수배열
+def solution(arr): # 정수배열
     answer = [] # +, - 배열
 
     stack = []
     cur = 1
-    for num in arr: # 얻고 싶은 배열 돌리면서
+    for num in arr: # 얻고 싶은 정수 배열 돌리면서
         while cur <= num: # 현재 숫자가 작으면
             stack.append(cur) # 그 숫자까지 넣어줌
             answer.append("+")
